@@ -74,6 +74,11 @@ const login = asyncWrapper(
 
 const validateToken = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json({ message: req.userId });
   }
 );

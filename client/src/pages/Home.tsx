@@ -5,7 +5,6 @@ import { MessageType, useAppContext } from "../Context/AppContext";
 import { useSocketContext } from "../Context/SocketContext";
 import { useEffect, useRef, useState } from "react";
 import * as apiClient from "../api-client";
-import { Message } from "postcss";
 
 const Home = () => {
   const { authUser, chatSelected, updateChatSelected } = useAppContext();

@@ -18,7 +18,7 @@ const Profile = () => {
   const { data: Profile } = useQuery("getProfile", apiClient.getMyProfile, {
     refetchOnWindowFocus: false,
   });
-  const { handlePreviewImg, setPreviewImg, previewImg } = usePreviewImg();
+  const { handlePreviewImg, previewImg } = usePreviewImg();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const { showToast } = useAppContext();

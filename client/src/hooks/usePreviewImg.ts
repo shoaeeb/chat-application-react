@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const usePreviewImg = () => {
   const [previewImg, setPreviewImg] = useState<string | ArrayBuffer | null>(

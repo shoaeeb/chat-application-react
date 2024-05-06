@@ -23,6 +23,11 @@ const getConversation = asyncWrapper(
         $in: [ourUserId],
       },
     });
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(conversation);
   }
 );
@@ -37,6 +42,11 @@ const getMessages = asyncWrapper(
       res.status(404).json({ message: "Conversation not found" });
       return;
     }
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(messages);
   }
 );
@@ -54,6 +64,11 @@ const createMessage = asyncWrapper(
       },
     });
     const getRecipeintSocketId = getSocketByUserId(otherUserId);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     if (!conversation) {
       const newConversation = new Conversation({
         participants: [sender, otherUserId],
@@ -67,6 +82,7 @@ const createMessage = asyncWrapper(
         messages: [{ message, sender }],
       });
       await newMessage.save();
+
       res.status(201).json(newMessage);
       io.to(getRecipeintSocketId).emit("newMessage", newMessage);
       return;
@@ -119,6 +135,11 @@ const getSuggestedUser = asyncWrapper(
     const suggestedUser = filteredUser.filter((user) => {
       return !participants.includes(user._id.toString());
     });
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(suggestedUser);
   }
 );

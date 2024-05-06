@@ -44,9 +44,16 @@ const signUp = asyncWrapper(async (req: Request, res: Response) => {
   );
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    // secure: process.env.NODE_ENV === "production",
+    secure: true,
+    sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24, //1day
   });
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    process.env.FRONTEND_URL as string
+  );
   res.status(201).json({ message: "User Created" });
 });
 
@@ -72,6 +79,11 @@ const getUserProfile = asyncWrapper(
       res.status(404).json({ errors: "User not found" });
       return;
     }
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(user);
   }
 );
@@ -114,6 +126,11 @@ const updateProfile = asyncWrapper(
     }
     user.profilePic = profilePic || user.profilePic;
     await user.save();
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(user);
   }
 );
@@ -125,6 +142,11 @@ const getMyProfile = asyncWrapper(
       res.status(404).json({ errors: "User Not Found" });
       return;
     }
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json(user);
   }
 );
@@ -135,7 +157,16 @@ const logout = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     res.cookie("token", "", {
       expires: new Date(0),
+      sameSite: "none",
+      httpOnly: true,
+      // secure: process.env.NODE_ENV === "production",
+      secure: true,
     });
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json({ message: "Logout Successfully" });
   }
 );

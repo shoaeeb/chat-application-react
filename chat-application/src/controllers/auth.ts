@@ -55,11 +55,19 @@ const login = asyncWrapper(
         expiresIn: "1d",
       }
     );
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      // secure: process.env.NODE_ENV === "production",
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24, //1d
     });
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json({ message: "User logged in" });
   }
 );
@@ -92,6 +100,11 @@ const forgetPassword = asyncWrapper(
       subject: "Reset Password",
       html: `Click on the link to reset your password ${process.env.FRONTEND_URL}/reset-password?token=${token}&email=${email}`,
     };
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     transporter.sendMail(
       mailOptions,
       (err: Error | null, info: SentMessageInfo) => {
@@ -119,6 +132,11 @@ const resetPassword = asyncWrapper(
     if (!tokenDoc) {
       throw new BadRequest("Invalid or expired token");
     }
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json({ message: "OK" });
   }
 );
@@ -139,6 +157,11 @@ const updatePassword = asyncWrapper(
     }
     user.password = password;
     await user.save();
+    res.setHeader("Access-Control-Allow-Credentials", "true");
+    res.setHeader(
+      "Access-Control-Allow-Origin",
+      process.env.FRONTEND_URL as string
+    );
     res.status(200).json({ message: "Password Reset Succesfully" });
   }
 );
